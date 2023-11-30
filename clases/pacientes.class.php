@@ -82,7 +82,7 @@ class pacientes extends conexion {
                 if(!isset($datos['pacienteId'])){
                     return $_respuestas->error_400();
                 }else{
-                    $this->pacienteId = $datos['pacienteId'];
+                    $this->pacienteid = $datos['pacienteId'];
                     if(isset($datos['nombre'])) { $this->nombre = $datos['nombre']; }
                     if(isset($datos['dni'])) { $this->dni = $datos['dni']; }
                     if(isset($datos['correo'])) { $this->correo = $datos['correo']; }
@@ -92,15 +92,15 @@ class pacientes extends conexion {
                     if(isset($datos['genero'])) { $this->genero = $datos['genero']; }
                     if(isset($datos['fechaNacimiento'])) { $this->fechaNacimiento = $datos['fechaNacimiento']; }
                     $resp = $this->modificarPaciente();
-                    //if($resp){
-                    //    $respuesta = $_respuestas->response;
-                    //    $respuesta["result"] = array(
-                    //        "pacienteId" => $resp
-                    //    );
-                  //      return $respuesta;
-                  //  }else{
-                 //       return $_respuestas->error_500();
-                 //  }
+                    if($resp){
+                        $respuesta = $_respuestas->response;
+                        $respuesta["result"] = array(
+                            "pacienteId" => $this->pacienteid
+                        );
+                       return $respuesta;
+                    }else{
+                        return $_respuestas->error_500();
+                   }
                 }
 
     }
@@ -111,12 +111,12 @@ class pacientes extends conexion {
         $this->codigoPostal . "', Telefono = '" . $this->telefono . "', Genero = '" . $this->genero . "', FechaNacimiento = '" . $this->fechaNacimiento . "', Correo = '" . $this->correo .
          "' WHERE PacienteId = '" . $this->pacienteid . "'"; 
             print_r($query);
-        //$resp = parent::nonQueryId($query);
-        //if($resp){
-        //     return $resp;
-        //}else{
-         //   return 0;
-        //}
+        $resp = parent::nonQuery($query);
+        if($resp){
+             return $resp;
+        }else{
+            return 0;
+        }
     }
 
 
