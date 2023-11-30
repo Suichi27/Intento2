@@ -1,0 +1,10 @@
+{
+    "conexion":{
+        "server" :"localhost",
+        "user" : "root",
+        "password" : "mierda123",
+        "database" : "bdhospital",
+        "port" : "3306"
+    }
+
+}
