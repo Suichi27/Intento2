@@ -39,10 +39,9 @@ if($_SERVER['REQUEST_METHOD']=="GET"){
 }else if($_SERVER['REQUEST_METHOD']=="PUT"){
     //recibimos los datos enviados
     $postBody = file_get_contents("php://input");
-    //enviamos datos al manejador
+    //enviamos datos
     $datosArray = $_pacientes->put($postBody);
-      //delvovemos una respuesta 
-  
+    
 
 }else if($_SERVER['REQUEST_METHOD']=="DELETE"){
     //recibimos los datos enviados
