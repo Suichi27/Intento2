@@ -100,6 +100,37 @@ class medicamentos extends conexion {
         }else{
             return 0;
         }
+    }   
+
+    public function delete($json){
+        $_respuestas = new respuestas;
+        $datos = json_encode($json,true);
+        if(!isset($datos['medicamentoId'])){
+            return $_respuestas->error_400();
+        }else{
+            $this->medicamentoid = $datos['medicamentoId'];
+            $resp = $this->eliminarMedicamento();
+            if($resp){
+                $respuesta = $_respuestas->response;
+                $respuesta['result'] = array(
+                    "medicamentoId" => $this->medicamentoid
+                );
+                return $respuesta;
+            }else{
+                return $_respuestas->error_500();
+            }
+        }
+    }
+   
+
+    private function eliminarMedicamento(){
+        $query = "DELETE FROM " . $this->table . " WHERE MedicamentoId= '" . $this->medicamentoid . "'";
+        $resp = parent::nonQuery($query);
+        if($resp >= 1 ){
+            return $resp;
+        }else{
+            return 0;
+        }
     }
 
 
