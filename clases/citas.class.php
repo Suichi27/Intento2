@@ -120,6 +120,41 @@ class citas extends conexion {
     }
 
 
+ 
+    public function delete($json){
+        $_respuestas = new respuestas;
+        $datos = json_decode($json,true);
+                if(!isset($datos['citaId'])){
+                    return $_respuestas->error_400();
+                }else{
+                    $this->citaid = $datos['citaId'];         
+                    $resp = $this->eliminarCita();
+                    if($resp){
+                        $respuesta = $_respuestas->response;
+                        $respuesta["result"] = array(
+                            "citaId" => $this->citaid
+                        );
+                        return $respuesta;
+                    }else{
+                        return $_respuestas->error_500();
+                    }
+                }
+
+    }
+
+    private function eliminarCita(){
+        $query = "DELETE FROM " . $this->table . " WHERE CitaId= '" . $this->citaid . "'";
+        $resp = parent::nonQuery($query);
+        if($resp >= 1 ){
+            return $resp;
+        }else{
+            return 0;
+        }
+    }
+
+
+
+
 
 }
 

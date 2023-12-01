@@ -64,7 +64,7 @@ if($_SERVER['REQUEST_METHOD']=="GET"){
     //recibimos los datos enviados
     $postBody = file_get_contents("php://input");
     //enviamos datos al manejador
-    $datosArray = $_pacientes->delete($postBody);
+    $datosArray = $_citas->delete($postBody);
       //delvovemos una respuesta 
    header('Content-Type: application/json');
    if(isset($datosArray["result"]["error_id"])){
