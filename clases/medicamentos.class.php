@@ -102,26 +102,29 @@ class medicamentos extends conexion {
         }
     }   
 
-    public function delete($json){
+
+  public function delete($json){
         $_respuestas = new respuestas;
         $datos = json_encode($json,true);
         if(!isset($datos['medicamentoId'])){
             return $_respuestas->error_400();
         }else{
-            $this->medicamentoid = $datos['medicamentoId'];
+            $this->medicamentoId = $datos['medicamentoId'];               
             $resp = $this->eliminarMedicamento();
             if($resp){
                 $respuesta = $_respuestas->response;
-                $respuesta['result'] = array(
-                    "medicamentoId" => $this->medicamentoid
+                $respuesta["result"] = array(
+                    "medicamentoId" => $this->medicamentoId
                 );
-                return $respuesta;
+               return $respuesta;
             }else{
                 return $_respuestas->error_500();
             }
         }
     }
    
+
+  
 
     private function eliminarMedicamento(){
         $query = "DELETE FROM " . $this->table . " WHERE MedicamentoId= '" . $this->medicamentoid . "'";
