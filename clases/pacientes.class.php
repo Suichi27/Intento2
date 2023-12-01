@@ -62,6 +62,7 @@ class pacientes extends conexion {
                 }
 
     }
+    
     private function insertarPaciente(){
         $query = "INSERT INTO " . $this->table . " (DNI,Nombre,Direccion,CodigoPostal,Telefono,Genero,FechaNacimiento,Correo) 
         values
