@@ -69,8 +69,49 @@ class citas extends conexion {
     private function insertarCita(){
         $query = "INSERT INTO " . $this->table . " (PacienteId,Fecha,HoraInicio,HoraFIn,Estado,Motivo) 
         values
-        ('" . $this->pacienteid . "','" . $this->fecha . "','" . $this->horaInicio ."','" . $this->HoraFin . "','"  . $this->estado . "','" . $this->motivo . "')"; 
+        ('" . $this->pacienteid . "','" . $this->fecha . "','" . $this->horaInicio . "','" . $this->horaFin . "','"  . $this->estado . "','" . $this->motivo . "')"; 
         $resp = parent::nonQueryId($query);
+        if($resp){
+             return $resp;
+        }else{
+            return 0;
+        }
+    }
+
+    public function put($json){
+        $_respuestas = new respuestas;
+        $datos = json_decode($json,true);
+                if(!isset($datos['citaId'])){
+                    return $_respuestas->error_400();
+                }else{
+                    $this->citaid = $datos['citaId'];         
+                    if(isset($datos['pacienteId'])) { $this->pacienteid = $datos['pacienteId']; }        
+                    if(isset($datos['fecha'])) { $this->fecha = $datos['fecha']; }
+                    if(isset($datos['motivo'])) { $this->motivo = $datos['motivo']; }
+                    if(isset($datos['horaInicio'])) { $this->horaInicio = $datos['horaInicio']; }
+                    if(isset($datos['horaFin'])) { $this->horaFin = $datos['horaFin']; }
+                    if(isset($datos['estado'])) { $this->estado = $datos['estado']; }
+                    $resp = $this->modificarCita();
+                    if($resp){
+                        $respuesta = $_respuestas->response;
+                        $respuesta["result"] = array(
+                            "citaId" => $this->citaid
+                        );
+                        return $respuesta;
+                    }else{
+                        return $_respuestas->error_500();
+                    }
+                }
+
+    }
+
+    
+    private function modificarCita(){
+        $query = "UPDATE " . $this->table . " SET PacienteId ='" . $this->pacienteid . "',Fecha = '" . $this->fecha . "', HoraInicio = '" . $this->horaInicio . "', HoraFIn = '" .
+        $this->horaFin . "', Estado = '" . $this->estado . "', Motivo = '" . $this->motivo .
+         "' WHERE CitaId = '" . $this->citaid . "'"; 
+          
+        $resp = parent::nonQuery($query);
         if($resp){
              return $resp;
         }else{
