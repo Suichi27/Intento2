@@ -62,12 +62,10 @@ class pacientes extends conexion {
                 }
 
     }
-
     private function insertarPaciente(){
         $query = "INSERT INTO " . $this->table . " (DNI,Nombre,Direccion,CodigoPostal,Telefono,Genero,FechaNacimiento,Correo)
         values
         ('" . $this->dni . "','" . $this->nombre . "','" . $this->direccion ."','" . $this->codigoPostal . "','"  . $this->telefono . "','" . $this->genero . "','" . $this->fechaNacimiento . "','" . $this->correo . "')"; 
-        print_r($query);
         $resp = parent::nonQueryId($query);
         if($resp){
              return $resp;
@@ -110,7 +108,7 @@ class pacientes extends conexion {
         $query = "UPDATE " . $this->table . " SET Nombre ='" . $this->nombre . "',Direccion = '" . $this->direccion . "', DNI = '" . $this->dni . "', CodigoPostal = '" .
         $this->codigoPostal . "', Telefono = '" . $this->telefono . "', Genero = '" . $this->genero . "', FechaNacimiento = '" . $this->fechaNacimiento . "', Correo = '" . $this->correo .
          "' WHERE PacienteId = '" . $this->pacienteid . "'"; 
-            print_r($query);
+          
         $resp = parent::nonQuery($query);
         if($resp){
              return $resp;
