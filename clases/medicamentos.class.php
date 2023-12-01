@@ -6,8 +6,9 @@ class medicamentos extends conexion {
 
     private $table = "medicamentos";
     private $medicamentoid = "";
+    private $nombre ="";
     private $costo = "";
-    private $fechaVencimiento = "";
+    private $fechaVencimiento = "0000-00-00";
     private $img = "";
 
     public function listarMedicamentos($pagina =1){
@@ -27,6 +28,81 @@ class medicamentos extends conexion {
         return parent::obtenerDatos($query);
 
     }
+
+    public function post($json){
+        $_respuestas = new respuestas;
+        $datos = json_decode($json,true);
+                if(!isset($datos['nombre'])){
+                    return $_respuestas->error_400();
+                }else{
+                    $this->nombre = $datos['nombre'];                   
+                    if(isset($datos['costo'])) { $this->costo = $datos['costo']; }
+                    if(isset($datos['fechaVencimiento'])) { $this->fechaVencimiento = $datos['fechaVencimiento']; }
+                    if(isset($datos['img'])) { $this->img = $datos['img']; }
+                    $resp = $this->insertarMedicamento();
+                    if($resp){
+                        $respuesta = $_respuestas->response;
+                        $respuesta["result"] = array(
+                            "medicamentoId" => $resp
+                        );
+                        return $respuesta;
+                    }else{
+                        return $_respuestas->error_500();
+                    }
+                }
+
+    }
+    private function insertarMedicamento(){
+        $query = "INSERT INTO " . $this->table . " (`Nombre`, `Costo`, `FechaVencimiento`, `img`)
+        values
+        ('" . $this->nombre . "','" . $this->costo . "','" . $this->fechaVencimiento ."','" . $this->img ."')"; 
+        $resp = parent::nonQueryId($query);
+        if($resp){
+             return $resp;
+        }else{
+            return 0;
+        }
+    }
+    
+
+    public function put($json){
+        $_respuestas = new respuestas;
+        $datos = json_decode($json,true);
+                if(!isset($datos['medicamentoId'])){
+                    return $_respuestas->error_400();
+                }else{
+                    $this->medicamentoId = $datos['medicamentoId'];         
+                    if(isset($datos['nombre'])) { $this->nombre = $datos['nombre']; }        
+                    if(isset($datos['costo'])) { $this->costo = $datos['costo']; }
+                    if(isset($datos['fechaVencimiento'])) { $this->fechaVencimiento = $datos['fechaVencimiento']; }
+                    if(isset($datos['img'])) { $this->img = $datos['img']; }
+                    $resp = $this->modificarMedicamento();
+                    if($resp){
+                        $respuesta = $_respuestas->response;
+                        $respuesta["result"] = array(
+                            "medicamentoId" => $this->medicamentoId
+                        );
+                        return $respuesta;
+                    }else{
+                        return $_respuestas->error_500();
+                    }
+                }
+
+    }
+
+    private function modificarMedicamento(){
+        $query = "UPDATE " . $this->table . " SET Nombre ='" . $this->nombre . "',Costo = '" . $this->costo . "', FechaVencimiento = '" . $this->fechaVencimiento . "', img = '" . $this->img .
+         "' WHERE MedicamentoId = '" . $this->medicamentoId . "'"; 
+          
+        $resp = parent::nonQuery($query);
+        if($resp){
+             return $resp;
+        }else{
+            return 0;
+        }
+    }
+
+
 
 }
 
