@@ -37,7 +37,7 @@ public function login($json){
                     }
 
                 }else{
-                    return $_respuestas->error_200("La password es invialida");
+                    return $_respuestas->error_200("La password es invalida");
                 }
                 
 
